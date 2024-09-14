@@ -69,12 +69,18 @@ def process_video(input_path, output_path, scale_x=1.0, scale_y=1.0, progress_fi
     print(f"processed frame dimensions: {new_width}x{new_height}")
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+
+    # Ensure output file path is correct
+    if not os.path.isabs(output_path):
+        output_path = os.path.join(os.getcwd(), output_path)
+
     out = cv2.VideoWriter(output_path, fourcc, fps, (new_width, new_height))
 
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     batch_size = 32
     frame_buffer = []
+    total_processed_frames = 0
 
     start_time = time.time()
     pool = Pool(cpu_count())
@@ -88,6 +94,7 @@ def process_video(input_path, output_path, scale_x=1.0, scale_y=1.0, progress_fi
                     for processed_frame in processed_frames:
                         if processed_frame is not None:
                             out.write(processed_frame)
+                            total_processed_frames += 1
                 break
 
             frame_buffer.append(frame)
@@ -96,6 +103,7 @@ def process_video(input_path, output_path, scale_x=1.0, scale_y=1.0, progress_fi
                 for processed_frame in processed_frames:
                     if processed_frame is not None:
                         out.write(processed_frame)
+                        total_processed_frames += 1
                 frame_buffer = []
 
             current_frame = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
@@ -107,7 +115,12 @@ def process_video(input_path, output_path, scale_x=1.0, scale_y=1.0, progress_fi
 
     cap.release()
     out.release()
-    print(f"processing complete in {time.time() - start_time:.2f} seconds.")
+
+    end_time = time.time()
+    total_time = end_time - start_time
+    average_fps = total_processed_frames / total_time if total_time > 0 else 0
+    average_spf = total_time / total_processed_frames if total_processed_frames > 0 else 0
+    print(f"processing complete in {total_time:.2f} seconds. Average FPS: {average_fps:.2f}, Average SPF: {average_spf:.2f}")
 
 def main():
     # parse command-line arguments
