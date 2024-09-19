@@ -6,7 +6,10 @@ To add
 + Optimize
 + UI or integration to After Effects
 
-# How to install
+# Usage
+
+python content_aware_scale.py input_video.mp4 output_scaled_video.mp4 --scale_x 0.5 --scale_y 0.5
+
 
  
 <h3 align="left"><img src = "https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width = 30px>
