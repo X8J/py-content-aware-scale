@@ -12,4 +12,5 @@ python content_aware_scale.py input_video.mp4 output_scaled_video.mp4 --scale_x 
 
 
  
-<h3 align="left"><img src = "https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width = 30px>
+<h3 align="left"><img src = ![image](https://github.com/user-attachments/assets/fc763c86-1962-4b92-b983-8858bbea51c4)
+" width = 30px>
